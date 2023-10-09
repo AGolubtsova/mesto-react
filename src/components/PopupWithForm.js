@@ -17,12 +17,12 @@ function PopupWithForm({ title, name, isOpen, onClose, children, onSubmit, butto
               className={`popup__form popup__form_type_${name}`} 
               onSubmit = {onSubmit} 
             >
-              {children}
+               <fieldset className = "popup__fieldset"> {children}</fieldset>
               <button
                 className = "popup__submit"
                 type = "submit"
               >
-                 {buttonText}
+                 {buttonText || 'Сохранить'}
               </button>
             </form>
           </div>

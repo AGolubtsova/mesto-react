@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import {useEffect, useState} from 'react';
 import Card from './Card';
 import Api from "../utils/Api";
 
 
 
 function Main ({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
-    const [cards, setCards] = React.useState([]);
-    const [userInfo, setUserInfo] = React.useState({});
+    const [cards, setCards] = useState([]);
+    const [userInfo, setUserInfo] = useState({});
 
-    React.useEffect(() => {
+    useEffect(() => {
         Api.getAllNeededData()
           .then(([items, user]) => {
             setCards(items);
