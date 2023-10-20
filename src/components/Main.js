@@ -1,9 +1,9 @@
-import { useContext } from 'react';
+import React from 'react';
 import Card from './Card';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Main ({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
-  const currentUser = useContext(CurrentUserContext);
+function Main ({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, onCardDelete }) {
+  const currentUser = React.useContext(CurrentUserContext);
   const { name, about, avatar } = currentUser;
 
   return (
@@ -51,7 +51,10 @@ function Main ({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardClick }) 
                 <Card 
                   key = {card._id} 
                   card = {card} 
-                  onCardClick = {onCardClick} />)
+                  onCardClick = {onCardClick}
+                  onCardLike = {onCardLike}
+                  onCardDelete = {onCardDelete}
+                />)
               )}
             </section>
           </main>  

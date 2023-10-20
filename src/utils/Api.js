@@ -82,6 +82,13 @@ class Api {
         })
     }
 
+    changeLikeCardStatus(cardId, isLiked) {
+      return this._sendRequest(`${this._url}/cards/${cardId}/likes`, {
+        method: `${!isLiked ? 'DELETE' : 'PUT'}`,
+        headers: this._headers,
+      })
+    }
+
     handleUserAvatar(data) {
         return this._sendRequest(`${this._url}/users/me/avatar`, {
           method: 'PATCH',
