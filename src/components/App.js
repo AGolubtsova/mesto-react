@@ -14,13 +14,15 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import Api from '../utils/Api';
 
 function App() {
+  // Стейты
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false); // Редактирование аватара
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false); // Редактирование профиля
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false); // Добавление карточки
-  const [selectedCard, setSelectedCard] = useState({});
+  const [selectedCard, setSelectedCard] = useState({});  // Передача данных при увеличении изображения
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
-
+  
+  // Рендер карточек и данных пользователя
   useEffect(() => {
     Api.getAllNeededData()
       .then(([items, user]) => {
@@ -32,10 +34,12 @@ function App() {
       });
   }, []);
 
+  // Обработчик для увеличения изображения
   const handleCardClick = (card) => {
       setSelectedCard(card);
   };
 
+  // Обработчик лайков карточки
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
@@ -50,6 +54,7 @@ function App() {
       });
   }
 
+  // Обработчик удаления карточки
   function handleCardDelete(cardId) {
     Api.deleteCard(cardId)
       .then(() => {
@@ -58,8 +63,9 @@ function App() {
       .catch((res) => {
         console.log(res);
       });
-  }
+  };
 
+  // Обработчик данных пользователя
   function handleUpdateUser(data) {
     Api.sendUserInfo(data)
       .then((res) => {
@@ -69,8 +75,9 @@ function App() {
       .catch((err) => {
         console.log(err);
       })
-    }
+  };
 
+  // Обработчик изменения аватара
   function handleUpdateAvatar(avatar) {
     Api.handleUserAvatar(avatar)
       .then((data) => {
@@ -82,6 +89,7 @@ function App() {
       });
   };
 
+  // Обработчик добавления карточки
   function handleAddPlaceSubmit(data) {
     Api.createNewCard(data)
       .then((res) => {
@@ -96,23 +104,23 @@ function App() {
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
-  }
+  };
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
-  }
+  };
 
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
-  }
+  };
 
-
+  // Функция для закрытия всех попапов
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard({});
-  }
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -128,9 +136,21 @@ function App() {
           cards = {cards}
         />
         <Footer />
-        <EditProfilePopup isOpen = {isEditProfilePopupOpen} onClose = {closeAllPopups} onUpdateUser = {handleUpdateUser}/>
-        <EditAvatarPopup isOpen = {isEditAvatarPopupOpen} onClose = {closeAllPopups} onUpdateAvatar = {handleUpdateAvatar} /> 
-        <AddPlacePopup isOpen = {isAddPlacePopupOpen} onClose = {closeAllPopups} onUpdatePlace = {handleAddPlaceSubmit} /> 
+        <EditProfilePopup 
+          isOpen = {isEditProfilePopupOpen}
+          onClose = {closeAllPopups}
+          onUpdateUser = {handleUpdateUser}
+        />
+        <EditAvatarPopup 
+          isOpen = {isEditAvatarPopupOpen}
+          onClose = {closeAllPopups}
+          onUpdateAvatar = {handleUpdateAvatar}
+        /> 
+        <AddPlacePopup 
+          isOpen = {isAddPlacePopupOpen}
+          onClose = {closeAllPopups}
+          onUpdatePlace = {handleAddPlaceSubmit}
+        /> 
         <PopupWithForm
           title = "Вы уверены?"
           name = "delete"
