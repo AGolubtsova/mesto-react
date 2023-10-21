@@ -74,14 +74,6 @@ class Api {
         });
     }
 
-    /*// Метод удаления лайка с сервера
-    deleteCardLike(id) {
-        return this._sendRequest(`${this._url}/cards/${id}/likes`, {
-          method: "DELETE",
-          headers: this._headers,
-        })
-    }*/
-
     changeLikeCardStatus(cardId, isLiked) {
       return this._sendRequest(`${this._url}/cards/${cardId}/likes`, {
         method: `${!isLiked ? 'DELETE' : 'PUT'}`,
@@ -94,7 +86,7 @@ class Api {
           method: 'PATCH',
           headers: this._headers,
           body: JSON.stringify({
-            avatar: data.userAvatar,
+            avatar: data.avatar,
           })
         })
     }

@@ -5,9 +5,10 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
-import EditProfilePopup from "./EditProfilePopup";
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 
-import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 import Api from '../utils/Api';
 
@@ -69,6 +70,18 @@ function App() {
       })
     }
 
+  function handleUpdateAvatar(avatar) {
+    Api.handleUserAvatar(avatar)
+      .then((data) => {
+        setCurrentUser(data);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
+
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   }
@@ -108,6 +121,7 @@ function App() {
         />
         <Footer />
         <EditProfilePopup isOpen = {isEditProfilePopupOpen} onClose = {closeAllPopups} onUpdateUser = {handleUpdateUser}/>
+        <EditAvatarPopup isOpen = {isEditAvatarPopupOpen} onClose = {closeAllPopups} onUpdateAvatar = {handleUpdateAvatar} /> 
         <PopupWithForm
           title = "Новое место"
           name = "card-add"
@@ -133,21 +147,7 @@ function App() {
             placeholder = "Ссылка на картинку" />
           <span className = "popup__input-error" id="link-error"></span>
         </PopupWithForm>
-        <PopupWithForm
-          title = "Обновить аватар"
-          name = "avatar-edit"
-          isOpen = {isEditAvatarPopupOpen}
-          onClose = {closeAllPopups}
-          onSubmit = {handleSubmit}
-        >   
-          <input 
-            type = "url" 
-            className = "popup__input popup__input_type_avatar" 
-            name = "userAvatar" 
-            id = "userAvatar-input" 
-            placeholder = "Ссылка на картинку" />
-            <span className = "popup__input-error" id="userAvatar-error"></span>  
-        </PopupWithForm>
+        
         <PopupWithForm
           title = "Вы уверены?"
           name = "delete"
