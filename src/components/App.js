@@ -5,6 +5,7 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import EditProfilePopup from "./EditProfilePopup";
 
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
@@ -57,6 +58,16 @@ function App() {
       });
   }
 
+  function handleUpdateUser(data) {
+    Api.sendUserInfo(data)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -96,32 +107,7 @@ function App() {
           cards = {cards}
         />
         <Footer />
-        <PopupWithForm 
-          title = "Редактировать профиль"
-          name = "profile-edit"
-          isOpen = {isEditProfilePopupOpen}
-          onClose = {closeAllPopups}
-          onSubmit = {handleSubmit}
-        >
-          <input 
-            type = "text" 
-            className = "popup__input popup__input_type_name" 
-            name = "username" 
-            id = "userName-input" 
-            placeholder = "Имя" 
-            minLength ="2" 
-            maxLength="40" />
-          <span className = "popup__input-error" id="username-error"></span>
-          <input 
-            type = "text" 
-            className ="popup__input popup__input_type_job" 
-            name="profession" 
-            id="userProf-input" 
-            placeholder="Профессия"  
-            minLength="2" 
-            maxLength="400"  />
-          <span className = "popup__input-error" id="profession-error"></span>
-        </PopupWithForm>
+        <EditProfilePopup isOpen = {isEditProfilePopupOpen} onClose = {closeAllPopups} onUpdateUser = {handleUpdateUser}/>
         <PopupWithForm
           title = "Новое место"
           name = "card-add"

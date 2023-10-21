@@ -61,8 +61,8 @@ class Api {
           headers: this._headers,
           method: 'PATCH',
           body: JSON.stringify({ 
-            name: userData.username, 
-            about: userData.profession 
+            name: userData.name, 
+            about: userData.about 
           })
         });
     }
@@ -74,13 +74,13 @@ class Api {
         });
     }
 
-    // Метод удаления лайка с сервера
+    /*// Метод удаления лайка с сервера
     deleteCardLike(id) {
         return this._sendRequest(`${this._url}/cards/${id}/likes`, {
           method: "DELETE",
           headers: this._headers,
         })
-    }
+    }*/
 
     changeLikeCardStatus(cardId, isLiked) {
       return this._sendRequest(`${this._url}/cards/${cardId}/likes`, {
