@@ -7,6 +7,7 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
@@ -80,6 +81,17 @@ function App() {
         console.log(err);
       });
   };
+
+  function handleAddPlaceSubmit(data) {
+    Api.createNewCard(data)
+      .then((res) => {
+        setCards([res, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   
 
   function handleEditAvatarClick() {
@@ -102,10 +114,6 @@ function App() {
     setSelectedCard({});
   }
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-  };
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className = "page">
@@ -122,32 +130,7 @@ function App() {
         <Footer />
         <EditProfilePopup isOpen = {isEditProfilePopupOpen} onClose = {closeAllPopups} onUpdateUser = {handleUpdateUser}/>
         <EditAvatarPopup isOpen = {isEditAvatarPopupOpen} onClose = {closeAllPopups} onUpdateAvatar = {handleUpdateAvatar} /> 
-        <PopupWithForm
-          title = "Новое место"
-          name = "card-add"
-          isOpen = {isAddPlacePopupOpen}
-          onClose = {closeAllPopups}
-          onSubmit = {handleSubmit}
-          buttonText = "Создать"
-        >
-          <input 
-            type = "text" 
-            className = "popup__input popup__input_type_place" 
-            name = "name" 
-            id = "placeName-input" 
-            placeholder = "Название"  
-            minLength = "2" 
-            maxLength = "30"/>
-          <span className = "popup__input-error" id = "name-error"></span>
-          <input 
-            type = "url" 
-            className = "popup__input popup__input_type_src" 
-            name = "link" 
-            id = "placeLink-input" 
-            placeholder = "Ссылка на картинку" />
-          <span className = "popup__input-error" id="link-error"></span>
-        </PopupWithForm>
-        
+        <AddPlacePopup isOpen = {isAddPlacePopupOpen} onClose = {closeAllPopups} onUpdatePlace = {handleAddPlaceSubmit} /> 
         <PopupWithForm
           title = "Вы уверены?"
           name = "delete"

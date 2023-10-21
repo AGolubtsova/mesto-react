@@ -25,12 +25,7 @@ class Api {
 
     // Метод добавления новой карточки на сервер
     createNewCard({name, link}) {
-        console.log(JSON.stringify({
-            name: name,
-            link: link
-        }));
-      
-      return this._sendRequest(`${this._url}/cards`, {
+        return this._sendRequest(`${this._url}/cards`, {
                 method: "POST",
                 headers: this._headers,
                 body: JSON.stringify({
