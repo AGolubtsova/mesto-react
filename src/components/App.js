@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import ConfirmPopup from './ConfirmPopup';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
@@ -18,10 +18,11 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false); // Редактирование аватара
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false); // Редактирование профиля
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false); // Добавление карточки
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState({card: {}, isOpen: false});
   const [selectedCard, setSelectedCard] = useState({});  // Передача данных при увеличении изображения
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
-  
+
   // Рендер карточек и данных пользователя
   useEffect(() => {
     Api.getAllNeededData()
@@ -53,12 +54,16 @@ function App() {
         console.log(err);
       });
   }
+  function handleCardDeleteRequest(card) {
+    setIsConfirmPopupOpen({ card, isOpen: true });
+  }
 
   // Обработчик удаления карточки
-  function handleCardDelete(cardId) {
-    Api.deleteCard(cardId)
+  function handleCardDelete(card) {
+    Api.deleteCard(card._id)
       .then(() => {
-        setCards((cards) => cards.filter((c) => c._id !== cardId));
+        setCards((cards) => cards.filter((c) => c._id !== card._id));
+        setIsConfirmPopupOpen({ card: {}, isOpen: false });
       })
       .catch((res) => {
         console.log(res);
@@ -120,6 +125,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard({});
+    setIsConfirmPopupOpen({ card: {}, isOpen: false });
   };
 
   return (
@@ -132,7 +138,7 @@ function App() {
           onAddPlace = {handleAddPlaceClick}
           onCardClick = {handleCardClick}
           onCardLike = {handleCardLike}
-          onCardDelete = {handleCardDelete}
+          onCardDeleteRequest={handleCardDeleteRequest}
           cards = {cards}
         />
         <Footer />
@@ -151,12 +157,12 @@ function App() {
           onClose = {closeAllPopups}
           onUpdatePlace = {handleAddPlaceSubmit}
         /> 
-        <PopupWithForm
-          title = "Вы уверены?"
-          name = "delete"
-          buttonText = "Да"
-        >   
-        </PopupWithForm>
+        <ConfirmPopup
+          card = {isConfirmPopupOpen.card}
+          isOpen = {isConfirmPopupOpen.isOpen}
+          onClose = {closeAllPopups}
+          onDelete = {handleCardDelete}
+        />
         <ImagePopup  card = {selectedCard} onClose = {closeAllPopups} />
       </div>
     </CurrentUserContext.Provider>
