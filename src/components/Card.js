@@ -21,36 +21,36 @@ function Card ({ card, onCardClick, onCardLike, onCardDeleteRequest }) {
     onCardDeleteRequest(card);
   }
    
-    return (
-      <li className = "element">
-        <img 
-          className = "element__image" 
-          onClick = {handleClick}
-          src = {card.link}
-          alt = {card.name}
-        />
-        <div className = "element__title-wrapper">
-          <h2 className = "element__title">{card.name}</h2>
-          <div className = "element__like-area">
-            <button 
-              type = "button" 
-              className = {cardLikeButtonClassName} 
-              onClick = {handleLikeClick}
-              aria-label = "Поставить лайк"
-            ></button>
-            <p className = "element__like-count">{card.likes.length}</p>
-          </div>
-        </div>
-        {isOwn && ( 
+  return (
+    <li className = "element">
+      <img 
+        className = "element__image" 
+        onClick = {handleClick}
+        src = {card.link}
+        alt = {card.name}
+      />
+      <div className = "element__title-wrapper">
+        <h2 className = "element__title">{card.name}</h2>
+        <div className = "element__like-area">
           <button 
-            type = "button"
-            className = "element__delete-button" 
-            aria-label = "Удалить карточку"
-            onClick = {handleDeleteRequest} 
+            type = "button" 
+            className = {cardLikeButtonClassName} 
+            onClick = {handleLikeClick}
+            aria-label = "Поставить лайк"
           ></button>
-        )}
-      </li>
-    )
+          <p className = "element__like-count">{card.likes.length}</p>
+        </div>
+      </div>
+      {isOwn && ( 
+        <button 
+          type = "button"
+          className = "element__delete-button" 
+          aria-label = "Удалить карточку"
+          onClick = {handleDeleteRequest} 
+        ></button>
+      )}
+    </li>
+  )
 }
 
 export default Card;

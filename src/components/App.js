@@ -54,6 +54,7 @@ function App() {
         console.log(err);
       });
   }
+
   function handleCardDeleteRequest(card) {
     setIsConfirmPopupOpen({ card, isOpen: true });
   }
@@ -126,6 +127,28 @@ function App() {
     setSelectedCard({});
     setIsConfirmPopupOpen({ card: {}, isOpen: false });
   };
+
+  function handleEscClose(evt) {
+    if (evt.key === 'Escape') {
+      closeAllPopups();
+    }
+  }
+  
+  function handleOverlayClose(evt) {
+    if (evt.target.classList.contains('popup')) {
+      closeAllPopups();
+    }
+  }
+  
+  useEffect(() => {
+    window.addEventListener('keydown', handleEscClose);
+    window.addEventListener('mousedown', handleOverlayClose);
+  
+    return () => {
+      window.removeEventListener('keydown', handleEscClose);
+      window.removeEventListener('mousedown', handleOverlayClose);
+    };
+  })
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
