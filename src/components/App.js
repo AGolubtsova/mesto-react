@@ -106,7 +106,6 @@ function App() {
       });
   };
   
-
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   };
