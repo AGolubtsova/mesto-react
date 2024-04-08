@@ -31,7 +31,7 @@
 * Клонировать репозиторий:
 
 ```console
-    git clone https://github.com/agolubtsova/mesto.git
+    git clone https://github.com/agolubtsova/mesto-react.git
 ```
 
 * Установить зависимости:
